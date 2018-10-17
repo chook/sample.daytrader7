@@ -29,7 +29,9 @@ import com.ibm.websphere.samples.daytrader.TradeAction;
 import com.ibm.websphere.samples.daytrader.util.Log;
 import com.ibm.websphere.samples.daytrader.util.TradeConfig;
 
-@WebServlet(name = "TestServlet", urlPatterns = { "/TestServlet" })
+import io.sentry.Sentry;
+
+@WebServlet(name = "TestServlet", urlPatterns = { "/TestServlet" }, loadOnStartup = 0)
 public class TestServlet extends HttpServlet {
 
     private static final long serialVersionUID = -2927579146688173127L;
@@ -37,6 +39,8 @@ public class TestServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
+        
+        Sentry.init();
     }
 
     /**
@@ -49,6 +53,8 @@ public class TestServlet extends HttpServlet {
      */
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+      
+        Sentry.capture("TestServlet.doGet");
         performTask(request, response);
     }
 

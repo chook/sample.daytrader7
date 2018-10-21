@@ -20,13 +20,12 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
+import io.sentry.Sentry;
 
 public class Log {
     
     private final static Logger log = Logger.getLogger("daytrader");
     
-
     // A general purpose, high performance logging, tracing, statistic service
 
     public static void log(String message) {
@@ -49,6 +48,11 @@ public class Log {
     public static void error(String message, Throwable e) {
         error(message + "\n\t" + e.toString());
         e.printStackTrace(System.out);
+        try
+        {
+          Sentry.capture(e);
+        }
+        catch (Throwable t) {}
     }
 
     public static void error(String msg1, String msg2, Throwable e) {
